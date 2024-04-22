@@ -37,6 +37,6 @@ This is a Homebridge plugin which allows you to control your DUKA SmartFan Wifi 
 
 ## Release notes:
 
-### 0.0.1
+### 0.0.3
 
 - First fork which allows you to add multiple devices and turn the on/off.
