@@ -1,5 +1,5 @@
 import { createSocket, Socket } from 'dgram';
-import { DataBlock, FuncType, Packet, Parameter, SpeedNumber, UnitOnOff } from './packet';
+import { DataBlock, FuncType, Packet, Parameter, UnitOnOff } from './packet';
 
 const PORT = 4000;
 
@@ -14,15 +14,16 @@ export class Command {
   }
 
   public static status() {
-    return new Command(FuncType.READ, [new DataBlock(Parameter.UNIT_ON_OFF), new DataBlock(Parameter.SPEED_NUMBER)]);
+    // return new Command(FuncType.READ, [new DataBlock(Parameter.UNIT_ON_OFF), new DataBlock(Parameter.SPEED_NUMBER)]);
+    return new Command(FuncType.READ, [new DataBlock(Parameter.UNIT_ON_OFF)]);
   }
 
   public static onOff(value: UnitOnOff) {
     return new Command(FuncType.WRITE, [new DataBlock(Parameter.UNIT_ON_OFF, value)]);
   }
 
-  public static speed(value: SpeedNumber) {
-    return new Command(FuncType.WRITE, [new DataBlock(Parameter.SPEED_NUMBER, value)]);
+  public static boostStatus() {
+    return new Command(FuncType.READ, [new DataBlock(Parameter.BOOST_ON_OFF)]);
   }
 
   public async execute(ip: string, deviceId: string, password: string): Promise<Packet> {

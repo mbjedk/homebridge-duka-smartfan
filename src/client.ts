@@ -1,5 +1,5 @@
 import { Command } from './command';
-import { Packet, SpeedNumber, UnitOnOff } from './packet';
+import { Packet, UnitOnOff } from './packet';
 import { Device } from './device';
 import Bottleneck from 'bottleneck';
 
@@ -10,19 +10,14 @@ export class DukaSmartFanClient {
 
   constructor(private readonly device: Device) {}
 
-  public async getStatus(): Promise<{ active: UnitOnOff; speed: SpeedNumber }> {
+  public async getStatus(): Promise<{ active: UnitOnOff }> {
     return this.send(Command.status()).then((response) => ({
       active: response.data[0].value!,
-      speed: response.data[1].value!,
     }));
   }
 
   public async turnOnOff(value: UnitOnOff): Promise<UnitOnOff> {
     return this.send(Command.onOff(value)).then((response) => response.data[0].value!);
-  }
-
-  public async changeSpeed(value: SpeedNumber): Promise<SpeedNumber> {
-    return this.send(Command.speed(value)).then((response) => response.data[0].value!);
   }
 
   private async send(command: Command): Promise<Packet> {

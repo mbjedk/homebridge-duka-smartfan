@@ -104,20 +104,14 @@ export enum FuncType {
 }
 
 export enum Parameter {
-  UNIT_ON_OFF = 0x01,
-  SPEED_NUMBER = 0x02, // Not used
+  UNIT_ON_OFF = 0x01, // Power status
+  BOOST_ON_OFF = 0x07, // Fan status (or Boost?)
+  HUMIDITY_SENSOR = 0x15, // Humidity Sensor
 }
 
 export enum UnitOnOff {
   ON = 1,
   OFF = 0,
-}
-
-// Not used
-export enum SpeedNumber {
-  SPEED_1 = 1,
-  SPEED_2 = 2,
-  SPEED_3 = 3,
 }
 
 export class DataBlock {
