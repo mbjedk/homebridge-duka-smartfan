@@ -9,7 +9,7 @@ import {
 } from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
-import { VentoExpertAccessory } from './accessory';
+import { DukaSmartFanAccessory } from './accessory';
 import { Device } from './device';
 
 export class DukaSmartFanPlatform implements DynamicPlatformPlugin {
@@ -39,11 +39,11 @@ export class DukaSmartFanPlatform implements DynamicPlatformPlugin {
 
     if (existingAccessory) {
       this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
-      new VentoExpertAccessory(this, existingAccessory, device);
+      new DukaSmartFanAccessory(this, existingAccessory, device);
     } else {
       this.log.info('Adding new accessory:', device.name);
       const accessory = new this.api.platformAccessory(device.name, uuid);
-      new VentoExpertAccessory(this, accessory, device);
+      new DukaSmartFanAccessory(this, accessory, device);
       this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
     }
   }

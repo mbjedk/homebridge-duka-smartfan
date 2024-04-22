@@ -21,22 +21,16 @@ export class VentoExpertAccessory {
       .setCharacteristic(this.platform.Characteristic.SerialNumber, device.deviceId);
 
     this.service =
-      this.accessory.getService(this.platform.Service.Fanv2) || this.accessory.addService(this.platform.Service.Fanv2);
+      this.accessory.getService(this.platform.Service.Fan) || this.accessory.addService(this.platform.Service.Fan);
 
     this.service.setCharacteristic(this.platform.Characteristic.Name, device.name);
 
     this.service
-      .getCharacteristic(this.platform.Characteristic.Active)
+      .getCharacteristic(this.platform.Characteristic.On)
       .onGet(this.getActive.bind(this))
       .onSet(this.setActive.bind(this));
 
     this.client = new DukaSmartFanClient(this.device);
-
-    // setInterval(() => this.client.getStatus()
-    //   .then(status => this.service
-    //     .updateCharacteristic(this.platform.Characteristic.Active, status.active)
-    //     .updateCharacteristic(this.platform.Characteristic.RotationSpeed, status.speed))
-    //   .catch(error => this.platform.log.warn('[%s] Client error:', this.device.deviceId, error.message)), 5_000);
   }
 
   async getActive(): Promise<CharacteristicValue> {
@@ -45,7 +39,6 @@ export class VentoExpertAccessory {
       .getStatus()
       .then((status) => {
         this.platform.log.debug('[%s] Status:', this.device.deviceId, status);
-        this.service.updateCharacteristic(this.platform.Characteristic.RotationSpeed, status.speed);
         return status.active;
       })
       .catch(this.handleError.bind(this));

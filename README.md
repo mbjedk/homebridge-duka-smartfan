@@ -6,7 +6,7 @@ This is a Homebridge plugin which allows you to control your DUKA SmartFan Wifi 
 
 1. This is Homebridge plugin, so make sure you have Homebridge Server up & running ([Homebridge site](https://homebridge.io)).
 2. Assign static IP address to your device (see your router settings).
-3. Install **homebridge-duka-smartfan** plugin using Homebridge UI or use this command: `sudo npm install -g homebridge-blauberg-vento`.
+3. Install **homebridge-duka-smartfan** plugin using Homebridge UI or use this command: `sudo npm install -g homebridge-duka-smartfan`.
 4. Configure plugin using Homebridge UI or `~/.homebridge/config.json`.
    ```json
    {
