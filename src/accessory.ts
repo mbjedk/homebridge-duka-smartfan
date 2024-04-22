@@ -1,4 +1,4 @@
-import { CharacteristicValue, Formats, PlatformAccessory, Service } from 'homebridge';
+import { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
 
 import { DukaSmartFanPlatform } from './platform';
 import { DukaSmartFanClient } from './client';
