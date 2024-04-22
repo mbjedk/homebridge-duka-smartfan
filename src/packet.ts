@@ -74,18 +74,9 @@ export class Packet {
     }
 
     // Data
-    const dataBlocks: DataBlock[] = [];
-    while (i < bytes.length - 2) {
-      if (bytes[i] === 0xFE) {
-        i++;// skip special command
-        const paramSize = bytes[i++];
-        const param = bytes[i++];
-        const data = bytes.subarray(i, i += paramSize);
-
-        dataBlocks.push(new DataBlock(param, undefined, data));
-      } else {
-        dataBlocks.push(new DataBlock(bytes[i++], bytes[i++]));
-      }
+    const dataBlocks = new Array((bytes.length - i - 2) / 2);
+    for (let j = 0; j < dataBlocks.length; j++) {
+      dataBlocks[j] = new DataBlock(bytes[i++], bytes[i++]);
     }
 
     // Checksum
@@ -115,8 +106,6 @@ export enum FuncType {
 export enum Parameter {
   UNIT_ON_OFF = 0x01,
   SPEED_NUMBER = 0x02,
-  FILTER_TIMER_COUNTDOWN = 0x64,
-  FILTER_REPLACEMENT_INDICATOR = 0x88,
 }
 
 export enum UnitOnOff {
@@ -130,14 +119,8 @@ export enum SpeedNumber {
   SPEED_3 = 3
 }
 
-export enum FilterReplacementIndicator {
-  REQUIRED = 1,
-  NOT_REQUIRED = 0
-}
-
 export class DataBlock {
   constructor(public readonly parameter: Parameter,
-              public readonly value?: number,
-              public readonly data?: Uint8Array) {
+              public readonly value?: number) {
   }
 }

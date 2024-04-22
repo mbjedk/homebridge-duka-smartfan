@@ -19,12 +19,7 @@ export class Command {
   }
 
   public static status() {
-    return new Command(FuncType.READ, [
-      new DataBlock(Parameter.UNIT_ON_OFF),
-      new DataBlock(Parameter.SPEED_NUMBER),
-      new DataBlock(Parameter.FILTER_TIMER_COUNTDOWN),
-      new DataBlock(Parameter.FILTER_REPLACEMENT_INDICATOR),
-    ]);
+    return new Command(FuncType.READ, [new DataBlock(Parameter.UNIT_ON_OFF), new DataBlock(Parameter.SPEED_NUMBER)]);
   }
 
   public static onOff(value: UnitOnOff) {

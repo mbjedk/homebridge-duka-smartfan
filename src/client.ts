@@ -1,6 +1,6 @@
 import {Command} from './command';
 import {Packet, SpeedNumber, UnitOnOff} from './packet';
-import {Device, DeviceStatus, FilterStatus} from './device';
+import {Device} from './device';
 import Bottleneck from 'bottleneck';
 
 const COMMAND_TIMEOUT = 2000;
@@ -11,16 +11,9 @@ export class VentoExpertClient {
   constructor(private readonly device: Device) {
   }
 
-  public async getStatus(): Promise<DeviceStatus> {
+  public async getStatus(): Promise<{ active: UnitOnOff; speed: SpeedNumber }> {
     return this.send(Command.status())
-      .then(response => new DeviceStatus(
-        response.data[0].value!,
-        response.data[1].value!,
-        new FilterStatus(
-          response.data[2].data![2],
-          response.data[3].value!,
-        ),
-      ));
+      .then(response => ({active: response.data[0].value!, speed: response.data[1].value!}));
   }
 
   public async turnOnOff(value: UnitOnOff): Promise<UnitOnOff> {
