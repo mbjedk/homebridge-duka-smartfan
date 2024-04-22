@@ -1,2 +1,2 @@
-export const PLATFORM_NAME = 'BlaubergVento';
-export const PLUGIN_NAME = 'homebridge-blauberg-vento';
+export const PLATFORM_NAME = 'DukaSmartFan';
+export const PLUGIN_NAME = 'homebridge-duka-smartfan';

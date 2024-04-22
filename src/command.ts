@@ -1,5 +1,5 @@
-import {createSocket, Socket} from 'dgram';
-import {DataBlock, FuncType, Packet, Parameter, SpeedNumber, UnitOnOff} from './packet';
+import { createSocket, Socket } from 'dgram';
+import { DataBlock, FuncType, Packet, Parameter, SpeedNumber, UnitOnOff } from './packet';
 
 const PORT = 4000;
 
@@ -9,13 +9,8 @@ export class Command {
   private complete?: (value: Packet) => void;
   private fail?: (error: Error) => void;
 
-  private constructor(
-    private readonly func: FuncType,
-    private readonly data: DataBlock[],
-  ) {
-    this.socket = createSocket('udp4')
-      .on('message', this.response.bind(this))
-      .on('error', this.cancel.bind(this));
+  private constructor(private readonly func: FuncType, private readonly data: DataBlock[]) {
+    this.socket = createSocket('udp4').on('message', this.response.bind(this)).on('error', this.cancel.bind(this));
   }
 
   public static status() {
@@ -57,7 +52,8 @@ export class Command {
   private close() {
     try {
       this.socket.close();
-    } catch (e) {// ignore
+    } catch (e) {
+      // ignore
     }
   }
 }

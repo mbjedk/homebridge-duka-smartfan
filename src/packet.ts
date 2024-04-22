@@ -1,19 +1,19 @@
-import {TextDecoder, TextEncoder} from 'util';
+import { TextDecoder, TextEncoder } from 'util';
 
 const MAX_PACKET_SIZE = 256;
-const PACKET_START = 0xFD;
+const PACKET_START = 0xfd;
 const PROTOCOL_TYPE = 0x02;
 
 const TEXT_ENCODER = new TextEncoder();
 const TEXT_DECODER = new TextDecoder();
 
 export class Packet {
-
-  constructor(public readonly deviceId: string,
-              public readonly password: string,
-              public readonly func: FuncType,
-              public readonly data: DataBlock[]) {
-  }
+  constructor(
+    public readonly deviceId: string,
+    public readonly password: string,
+    public readonly func: FuncType,
+    public readonly data: DataBlock[]
+  ) {}
 
   public toBytes(): Uint8Array {
     const bytes = new Uint8Array(MAX_PACKET_SIZE);
@@ -38,7 +38,7 @@ export class Packet {
     bytes[i++] = this.func;
 
     // Data
-    this.data.forEach(dataBlock => {
+    this.data.forEach((dataBlock) => {
       bytes[i++] = dataBlock.parameter;
       if (this.func === FuncType.WRITE) {
         bytes[i++] = dataBlock.value!;
@@ -91,36 +91,35 @@ export class Packet {
 
   private static checksum(bytes: Uint8Array): number[] {
     let checksum = 0;
-    bytes.forEach(b => checksum += b);
-    checksum = checksum & 0xFFFF;
-    return [checksum & 0xFF, checksum >> 8];
+    bytes.forEach((b) => (checksum += b));
+    checksum = checksum & 0xffff;
+    return [checksum & 0xff, checksum >> 8];
   }
 }
 
 export enum FuncType {
   READ = 0x01,
   WRITE = 0x03,
-  RESPONSE = 0x06
+  RESPONSE = 0x06,
 }
 
 export enum Parameter {
   UNIT_ON_OFF = 0x01,
-  SPEED_NUMBER = 0x02,
+  SPEED_NUMBER = 0x02, // Not used
 }
 
 export enum UnitOnOff {
   ON = 1,
-  OFF = 0
+  OFF = 0,
 }
 
+// Not used
 export enum SpeedNumber {
   SPEED_1 = 1,
   SPEED_2 = 2,
-  SPEED_3 = 3
+  SPEED_3 = 3,
 }
 
 export class DataBlock {
-  constructor(public readonly parameter: Parameter,
-              public readonly value?: number) {
-  }
+  constructor(public readonly parameter: Parameter, public readonly value?: number) {}
 }

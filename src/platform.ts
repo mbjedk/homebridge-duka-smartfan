@@ -1,20 +1,24 @@
-import {API, Characteristic, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service} from 'homebridge';
+import {
+  API,
+  Characteristic,
+  DynamicPlatformPlugin,
+  Logger,
+  PlatformAccessory,
+  PlatformConfig,
+  Service,
+} from 'homebridge';
 
-import {PLATFORM_NAME, PLUGIN_NAME} from './settings';
-import {VentoExpertAccessory} from './accessory';
-import {Device} from './device';
+import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
+import { VentoExpertAccessory } from './accessory';
+import { Device } from './device';
 
-export class BlaubergVentoPlatform implements DynamicPlatformPlugin {
+export class DukaSmartFanPlatform implements DynamicPlatformPlugin {
   public readonly Service: typeof Service = this.api.hap.Service;
   public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
 
   public readonly accessories: PlatformAccessory[] = [];
 
-  constructor(
-    public readonly log: Logger,
-    public readonly config: PlatformConfig,
-    public readonly api: API,
-  ) {
+  constructor(public readonly log: Logger, public readonly config: PlatformConfig, public readonly api: API) {
     this.api.on('didFinishLaunching', () => this.discoverDevices());
   }
 
@@ -31,7 +35,7 @@ export class BlaubergVentoPlatform implements DynamicPlatformPlugin {
 
   configureDevice(device: Device) {
     const uuid = this.api.hap.uuid.generate(device.deviceId);
-    const existingAccessory = this.accessories.find(accessory => accessory.UUID === uuid);
+    const existingAccessory = this.accessories.find((accessory) => accessory.UUID === uuid);
 
     if (existingAccessory) {
       this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);

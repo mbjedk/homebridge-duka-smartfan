@@ -1,16 +1,16 @@
 {
   "private": false,
-  "displayName": "Homebridge Blauberg Vento",
-  "name": "homebridge-blauberg-vento",
-  "version": "0.8.0",
-  "description": "Homebridge plugin for Blauberg Vento Expert",
+  "displayName": "Homebridge DUKA SmartFan",
+  "name": "homebridge-duka-smartfan",
+  "version": "0.0.1",
+  "description": "Homebridge plugin for DUKA SmartFan Wifi",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PaulMT/homebridge-blauberg-vento.git"
+    "url": "https://github.com/mbjedk/homebridge-duka-smartfan.git"
   },
   "bugs": {
-    "url": "https://github.com/PaulMT/homebridge-blauberg-vento/issues"
+    "url": "https://github.com/mbjedk/homebridge-duka-smartfan/issues"
   },
   "engines": {
     "node": ">=14.18.1",
