@@ -13,7 +13,7 @@ export class DukaSmartFanClient {
   public async getStatus(): Promise<{ active: UnitOnOff, boost: UnitOnOff }> {
     return this.send(Command.status()).then((response) => ({
       active: response.data[0].value!,
-      boost: response.data[1].value!,
+      boost: response.data[0].value! && response.data[1].value!,
     }));
   }
 
