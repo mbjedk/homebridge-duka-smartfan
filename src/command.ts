@@ -14,16 +14,15 @@ export class Command {
   }
 
   public static status() {
-    // return new Command(FuncType.READ, [new DataBlock(Parameter.UNIT_ON_OFF), new DataBlock(Parameter.SPEED_NUMBER)]);
-    return new Command(FuncType.READ, [new DataBlock(Parameter.UNIT_ON_OFF)]);
+    return new Command(FuncType.READ, [new DataBlock(Parameter.UNIT_ON_OFF), new DataBlock(Parameter.BOOST_ON_OFF)]);
   }
 
   public static onOff(value: UnitOnOff) {
     return new Command(FuncType.WRITE, [new DataBlock(Parameter.UNIT_ON_OFF, value)]);
   }
 
-  public static boostStatus() {
-    return new Command(FuncType.READ, [new DataBlock(Parameter.BOOST_ON_OFF)]);
+  public static boostOnOff(value: UnitOnOff) {
+    return new Command(FuncType.WRITE, [new DataBlock(Parameter.BOOST_ON_OFF, value)]);
   }
 
   public async execute(ip: string, deviceId: string, password: string): Promise<Packet> {

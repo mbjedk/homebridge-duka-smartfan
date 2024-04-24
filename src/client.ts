@@ -10,15 +10,21 @@ export class DukaSmartFanClient {
 
   constructor(private readonly device: Device) {}
 
-  public async getStatus(): Promise<{ active: UnitOnOff }> {
+  public async getStatus(): Promise<{ active: UnitOnOff, boost: UnitOnOff }> {
     return this.send(Command.status()).then((response) => ({
       active: response.data[0].value!,
+      boost: response.data[1].value!,
     }));
   }
 
   public async turnOnOff(value: UnitOnOff): Promise<UnitOnOff> {
     return this.send(Command.onOff(value)).then((response) => response.data[0].value!);
   }
+
+  public async turnBoostOnOff(value: UnitOnOff): Promise<UnitOnOff> {
+    return this.send(Command.boostOnOff(value)).then((response) => response.data[0].value!);
+  }
+
 
   private async send(command: Command): Promise<Packet> {
     return Promise.race([

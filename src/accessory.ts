@@ -5,7 +5,7 @@ import { DukaSmartFanClient } from './client';
 import { UnitOnOff } from './packet';
 import { Device } from './device';
 
-export class VentoExpertAccessory {
+export class DukaSmartFanAccessory {
   private service: Service;
   private client: DukaSmartFanClient;
 
@@ -20,8 +20,9 @@ export class VentoExpertAccessory {
       .setCharacteristic(this.platform.Characteristic.Model, 'SmartFan')
       .setCharacteristic(this.platform.Characteristic.SerialNumber, device.deviceId);
 
+    // Main Fan Control
     this.service =
-      this.accessory.getService(this.platform.Service.Fan) || this.accessory.addService(this.platform.Service.Fan);
+      this.accessory.getService(this.platform.Service.Switch) || this.accessory.addService(this.platform.Service.Switch);
 
     this.service.setCharacteristic(this.platform.Characteristic.Name, device.name);
 
@@ -30,6 +31,15 @@ export class VentoExpertAccessory {
       .onGet(this.getActive.bind(this))
       .onSet(this.setActive.bind(this));
 
+    // Boost Control
+    const boostControl = this.accessory.getService('Boost Control') ||
+    this.accessory.addService(this.platform.Service.Fan, 'Boost Control', 'BOOST_CONTROL_SWITCH');
+
+    boostControl.getCharacteristic(this.platform.Characteristic.On)
+    .onGet(this.getBoostOnOff.bind(this))
+    .onSet(this.setBoost.bind(this));
+
+    // Init Duka Comms
     this.client = new DukaSmartFanClient(this.device);
   }
 
@@ -48,6 +58,25 @@ export class VentoExpertAccessory {
     this.platform.log.debug('[%s] Turn on/off ->', this.device.deviceId, value);
     return this.client
       .turnOnOff(<UnitOnOff>value)
+      .then((active) => this.platform.log.debug('[%s] Turned on/off:', this.device.deviceId, active))
+      .catch(this.handleError.bind(this));
+  }
+
+  async getBoostOnOff(): Promise<CharacteristicValue> {
+    this.platform.log.debug('[%s] Get boost status', this.device.deviceId);
+    return this.client
+      .getStatus()
+      .then((status) => {
+        this.platform.log.debug('[%s] Status:', this.device.deviceId, status);
+        return status.boost;
+      })
+      .catch(this.handleError.bind(this));
+  }
+
+  async setBoost(value: CharacteristicValue) {
+    this.platform.log.debug('[%s] Turn boost on/off ->', this.device.deviceId, value);
+    return this.client
+      .turnBoostOnOff(<UnitOnOff>value)
       .then((active) => this.platform.log.debug('[%s] Turned on/off:', this.device.deviceId, active))
       .catch(this.handleError.bind(this));
   }
