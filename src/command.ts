@@ -17,6 +17,10 @@ export class Command {
     return new Command(FuncType.READ, [new DataBlock(Parameter.UNIT_ON_OFF), new DataBlock(Parameter.BOOST_ON_OFF)]);
   }
 
+  public static triggerStatus() {
+    return new Command(FuncType.READ, [new DataBlock(Parameter.TEMPERATURE_SENSOR_OPERATION), new DataBlock(Parameter.HUMIDITY_SENSOR_OPERATION), new DataBlock(Parameter.EXTERNAL_SWITCH_OPERATION), new DataBlock(Parameter.MOTION_SENSOR_OPERATION), new DataBlock(Parameter.SILENT_MODE_OPERATION)]);
+  }
+
   public static onOff(value: UnitOnOff) {
     return new Command(FuncType.WRITE, [new DataBlock(Parameter.UNIT_ON_OFF, value)]);
   }

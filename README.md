@@ -31,12 +31,17 @@ This is a Homebridge plugin which allows you to control your DUKA SmartFan Wifi 
 
 - Turning Fan on and off
 - Boost function
+- External Switch as Motion Sensor
 
 ## Supported Models:
 
 - DUKA SmartFan WiFi - Firmware 2.2
 
 ## Release notes:
+
+### 0.0.5
+
+- Added External Switch as Motion Sensor
 
 ### 0.0.4
 
