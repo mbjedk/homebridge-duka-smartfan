@@ -17,12 +17,18 @@ export class DukaSmartFanClient {
     }));
   }
 
-  public async getTriggerStatus(): Promise<{tempSensor: UnitOnOff, humiditySensor: UnitOnOff, externalSwitchSensor: UnitOnOff, motionSensor: UnitOnOff, silentModeSensor: UnitOnOff }> {
+  public async getTriggerStatus(): Promise<{
+    tempSensor: UnitOnOff,
+    humiditySensor: UnitOnOff,
+    externalSwitchSensor: UnitOnOff,
+    motionSensor: UnitOnOff,
+    silentModeSensor: UnitOnOff
+}> {
     return this.send(Command.triggerStatus()).then((response) => ({
-      tempSensor: response.data[0].value!, 
-      humiditySensor: response.data[1].value!, 
-      externalSwitchSensor: response.data[2].value!, 
-      motionSensor: response.data[3].value!, 
+      tempSensor: response.data[0].value!,
+      humiditySensor: response.data[1].value!,
+      externalSwitchSensor: response.data[2].value!,
+      motionSensor: response.data[3].value!,
       silentModeSensor: response.data[4].value!
     }));
   }
