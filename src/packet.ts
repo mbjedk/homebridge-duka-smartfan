@@ -104,9 +104,48 @@ export enum FuncType {
 }
 
 export enum Parameter {
-  UNIT_ON_OFF = 0x01, // Power status
-  BOOST_ON_OFF = 0x07, // Fan status (or Boost?)
-  HUMIDITY_SENSOR = 0x15, // Humidity Sensor
+  UNIT_ON_OFF = 0x0001, // R/W/RW - Fan On/Off
+  BATTERY_STATUS = 0x0002, // R - Battery status
+  HOURS_24_MODE_SELECTION = 0x0003, // R/W/RW - 24 hours mode selection
+  CURRENT_FAN_SPEED = 0x0004, // R - Current fan speed (rpm)
+  BOOST_ON_OFF = 0x0005, // R/W/RW - BOOST mode On/Off
+  BOOST_TIMER = 0x0006, // R - Current BOOST timer countdown in seconds
+  BUILT_IN_TIMER_STATUS = 0x0007, // R - Current status of the built-in timer
+  HUMIDITY_SENSOR_OPERATION = 0x0008, // R - Current status of fan operation by humidity sensor
+  TEMPERATURE_SENSOR_OPERATION = 0x000a, // R - Current status of fan operation by temperature sensor
+  MOTION_SENSOR_OPERATION = 0x000b, // R - Current status of fan operation by motion sensor
+  EXTERNAL_SWITCH_OPERATION = 0x000c, // R - Current status of fan operation by signal from an external switch
+  INTERVAL_VENTILATION_MODE = 0x000d, // R - Current status of fan operation in interval ventilation mode
+  SILENT_MODE_OPERATION = 0x000e, // R - Current status of fan operation in SILENT mode
+  HUMIDITY_SENSOR_PERMISSION = 0x000f, // R/W/RW - Permission of operation based on humidity sensor readings
+  TEMPERATURE_SENSOR_PERMISSION = 0x0011, // R/W/RW - Permission of operation based on temperature sensor readings
+  MOTION_SENSOR_PERMISSION = 0x0012, // R/W/RW - Permission of operation based on motion sensor readings
+  EXTERNAL_SWITCH_PERMISSION = 0x0013, // R/W/RW - Permission of operation based on signal from an external switch
+  MAX_SPEED_SETPOINT = 0x0018, // R/W/RW/INC/DEC - Max speed setpoint
+  SILENT_SPEED_SETPOINT = 0x001a, // R/W/RW/INC/DEC - Silent speed setpoint
+  INTERVAL_VENTILATION_SPEED_SETPOINT = 0x001b, // R/W/RW/INC/DEC - Interval ventilation speed setpoint
+  INTERVAL_VENTILATION_ACTIVATION = 0x001d, // R/W/RW - Interval ventilation mode activation
+  SILENT_MODE_ACTIVATION = 0x001e, // R/W/RW - Silent mode activation
+  SILENT_MODE_START_TIME = 0x001f, // R/W/RW - Silent Mode start time in seconds
+  SILENT_MODE_END_TIME = 0x0020, // R/W/RW - Silent Mode end time in seconds
+  CURRENT_TIME_INTERNAL_CLOCK = 0x0021, // R/W/RW - Current time of the fan internal clock in seconds
+  TURN_OFF_DELAY_TIMER = 0x0023, // R/W/RW/INC/DEC - Turn-off delay timer/BOOST setpoint
+  TURN_ON_DELAY_TIMER = 0x0024, // R/W/RW/INC/DEC - Turn-on delay timer setpoint
+  RESET_TO_FACTORY_SETTINGS = 0x0025, // W - Resetting parameters to factory settings
+  DEVICE_SEARCH_LOCAL_NETWORK = 0x007c, // R - Device search on the local Ethernet network
+  BASE_FIRMWARE_VERSION = 0x0086, // R - Controller base firmware version and date
+  WIFI_OPERATION_MODE = 0x0094, // R/W/RW - Wi-Fi operation mode
+  WIFI_CLIENT_MODE_NAME = 0x0095, // R/W/RW - Wi-Fi name in Client mode
+  WIFI_PASSWORD = 0x0096, // R/W/RW - Wi-Fi password
+  WIFI_ENCRYPTION_TYPE = 0x0099, // R/W/RW - Wi-Fi data encryption type
+  WIFI_FREQUENCY_CHANNEL = 0x009a, // R/W/RW - Wi-Fi frequency channel
+  WIFI_DHCP_MODE = 0x009b, // R/W/RW - Wi-Fi module DHCP
+  WIFI_IP_ADDRESS = 0x009c, // R/W/RW - IP address assigned to Wi-Fi module
+  WIFI_SUBNET_MASK = 0x009d, // R/W/RW - Wi-Fi module subnet mask
+  WIFI_GATEWAY = 0x009e, // R/W/RW - Wi-Fi module main gateway
+  APPLY_WIFI_SETTINGS = 0x00a0, // W - Apply new Wi-Fi parameters and quit Wi-Fi module Setup Mode
+  CURRENT_WIFI_IP_ADDRESS = 0x00a3, // R - Current Wi-Fi module IP address
+  UNIT_TYPE = 0x00b9, // R - Unit type
 }
 
 export enum UnitOnOff {
