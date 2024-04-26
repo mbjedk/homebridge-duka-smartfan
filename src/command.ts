@@ -13,20 +13,25 @@ export class Command {
     this.socket = createSocket('udp4').on('message', this.response.bind(this)).on('error', this.cancel.bind(this));
   }
 
-  public static status() {
+  public static getStatus() {
     return new Command(FuncType.READ, [new DataBlock(Parameter.UNIT_ON_OFF), new DataBlock(Parameter.BOOST_ON_OFF)]);
   }
 
-  public static triggerStatus() {
-    return new Command(FuncType.READ, [new DataBlock(Parameter.TEMPERATURE_SENSOR_OPERATION), new DataBlock(Parameter.HUMIDITY_SENSOR_OPERATION), new DataBlock(Parameter.EXTERNAL_SWITCH_OPERATION), new DataBlock(Parameter.MOTION_SENSOR_OPERATION), new DataBlock(Parameter.SILENT_MODE_OPERATION)]);
+  public static getFanSpeeds() {
+    return new Command(FuncType.READ, [new DataBlock(Parameter.SILENT_SPEED_SETPOINT), new DataBlock(Parameter.MAX_SPEED_SETPOINT)]);
   }
 
-  public static onOff(value: UnitOnOff) {
+  public static setPower(value: UnitOnOff) {
     return new Command(FuncType.WRITE, [new DataBlock(Parameter.UNIT_ON_OFF, value)]);
   }
 
-  public static boostOnOff(value: UnitOnOff) {
+  public static setBoost(value: UnitOnOff) {
     return new Command(FuncType.WRITE, [new DataBlock(Parameter.BOOST_ON_OFF, value)]);
+  }
+
+  public static setFanSpeed(type: 'silent' | 'max', value: number ) {
+    const Param = type === 'silent' ? Parameter.SILENT_SPEED_SETPOINT : Parameter.MAX_SPEED_SETPOINT;
+    return new Command(FuncType.WRITE, [new DataBlock(Param, value)]);
   }
 
   public async execute(ip: string, deviceId: string, password: string): Promise<Packet> {

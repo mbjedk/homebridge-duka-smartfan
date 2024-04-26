@@ -22,7 +22,7 @@ export class DukaSmartFanAccessory {
 
     // Main Fan Control
     this.service =
-      this.accessory.getService(this.platform.Service.Switch) || this.accessory.addService(this.platform.Service.Switch);
+      this.accessory.getService(this.platform.Service.Fan) || this.accessory.addService(this.platform.Service.Fan);
 
     this.service.setCharacteristic(this.platform.Characteristic.Name, device.name);
 
@@ -30,6 +30,10 @@ export class DukaSmartFanAccessory {
       .getCharacteristic(this.platform.Characteristic.On)
       .onGet(this.getActive.bind(this))
       .onSet(this.setActive.bind(this));
+
+    this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
+      .onGet(this.getSilentFanSpeed.bind(this))
+      .onSet(this.setSilentFanSpeed.bind(this));
 
     // Boost Control
     const boostControl = this.accessory.getService('Boost Control') ||
@@ -39,12 +43,9 @@ export class DukaSmartFanAccessory {
       .onGet(this.getBoostOnOff.bind(this))
       .onSet(this.setBoost.bind(this));
 
-    // Triggers
-    const externalSwitchSensor = this.accessory.getService('External Switch Sensor') ||
-    this.accessory.addService(this.platform.Service.MotionSensor, 'External Switch Sensor', 'EXTERNAL_SWITCH_SENSOR');
-
-    externalSwitchSensor.getCharacteristic(this.platform.Characteristic.MotionDetected)
-      .onGet(this.getExternalSwitch.bind(this));
+    boostControl.getCharacteristic(this.platform.Characteristic.RotationSpeed)
+      .onGet(this.getMaxFanSpeed.bind(this))
+      .onSet(this.setMaxFanSpeed.bind(this));
 
     // Init Duka Comms
     this.client = new DukaSmartFanClient(this.device);
@@ -64,7 +65,7 @@ export class DukaSmartFanAccessory {
   async setActive(value: CharacteristicValue) {
     this.platform.log.debug('[%s] Turn on/off ->', this.device.deviceId, value);
     return this.client
-      .turnOnOff(<UnitOnOff>value)
+      .setActive(<UnitOnOff>value)
       .then((active) => this.platform.log.debug('[%s] Turned on/off:', this.device.deviceId, active))
       .catch(this.handleError.bind(this));
   }
@@ -83,19 +84,46 @@ export class DukaSmartFanAccessory {
   async setBoost(value: CharacteristicValue) {
     this.platform.log.debug('[%s] Turn boost on/off ->', this.device.deviceId, value);
     return this.client
-      .turnBoostOnOff(<UnitOnOff>value)
+      .setBoost(<UnitOnOff>value)
       .then((active) => this.platform.log.debug('[%s] Turned on/off:', this.device.deviceId, active))
       .catch(this.handleError.bind(this));
   }
 
-  async getExternalSwitch(): Promise<CharacteristicValue> {
-    this.platform.log.debug('[%s] Get external switch status', this.device.deviceId);
+  async getSilentFanSpeed(): Promise<CharacteristicValue> {
+    this.platform.log.debug('[%s] Get silent fanspeed', this.device.deviceId);
     return this.client
-      .getTriggerStatus()
+      .getFanSpeeds()
       .then((status) => {
-        this.platform.log.debug('[%s] Status:', this.device.deviceId, status);
-        return status.externalSwitchSensor;
+        this.platform.log.debug('[%s] Silent Fan Speed:', this.device.deviceId, status);
+        return status.silent;
       })
+      .catch(this.handleError.bind(this));
+  }
+
+  async setSilentFanSpeed(value: CharacteristicValue) {
+    this.platform.log.debug('[%s] Set silent fanspeed ->', this.device.deviceId, value);
+    return this.client
+      .setFanSpeed('silent', <number>value)
+      .then((active) => this.platform.log.debug('[%s] Silent fanspeed:', this.device.deviceId, active))
+      .catch(this.handleError.bind(this));
+  }
+
+  async getMaxFanSpeed(): Promise<CharacteristicValue> {
+    this.platform.log.debug('[%s] Get max fanspeed', this.device.deviceId);
+    return this.client
+      .getFanSpeeds()
+      .then((status) => {
+        this.platform.log.debug('[%s] Max Fan Speed:', this.device.deviceId, status);
+        return status.max;
+      })
+      .catch(this.handleError.bind(this));
+  }
+
+  async setMaxFanSpeed(value: CharacteristicValue) {
+    this.platform.log.debug('[%s]Set max fanspeed ->', this.device.deviceId, value);
+    return this.client
+      .setFanSpeed('max', <number>value)
+      .then((active) => this.platform.log.debug('[%s] Max fanspeed:', this.device.deviceId, active))
       .catch(this.handleError.bind(this));
   }
 
