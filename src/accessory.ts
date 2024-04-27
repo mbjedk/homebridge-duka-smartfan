@@ -1,4 +1,4 @@
-import { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
+import { CharacteristicValue, Formats, PlatformAccessory, Service } from 'homebridge';
 
 import { DukaSmartFanPlatform } from './platform';
 import { DukaSmartFanClient } from './client';
@@ -33,7 +33,14 @@ export class DukaSmartFanAccessory {
 
     this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
       .onGet(this.getSilentFanSpeed.bind(this))
-      .onSet(this.setSilentFanSpeed.bind(this));
+      .onSet(this.setSilentFanSpeed.bind(this))
+      .setProps({
+        minValue: 30,
+        maxValue: 100,
+        minStep: 1,
+        unit: 'percentage',
+        format: Formats.UINT8,
+      });
 
     // Boost Control
     const boostControl = this.accessory.getService('Boost Control') ||
@@ -45,7 +52,14 @@ export class DukaSmartFanAccessory {
 
     boostControl.getCharacteristic(this.platform.Characteristic.RotationSpeed)
       .onGet(this.getMaxFanSpeed.bind(this))
-      .onSet(this.setMaxFanSpeed.bind(this));
+      .onSet(this.setMaxFanSpeed.bind(this))
+      .setProps({
+        minValue: 30,
+        maxValue: 100,
+        minStep: 1,
+        unit: 'percentage',
+        format: Formats.UINT8,
+      });
 
     // Init Duka Comms
     this.client = new DukaSmartFanClient(this.device);
