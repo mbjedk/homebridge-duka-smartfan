@@ -1,6 +1,6 @@
 import { Command } from './command';
 import { Packet, UnitOnOff } from './packet';
-import { Device } from './device';
+import type { Device, DeviceStatus, FanSpeedStatus } from './device';
 import Bottleneck from 'bottleneck';
 
 const COMMAND_TIMEOUT = 2000;
@@ -10,14 +10,14 @@ export class DukaSmartFanClient {
 
   constructor(private readonly device: Device) {}
 
-  public async getStatus(): Promise<{ active: UnitOnOff, boost: UnitOnOff }> {
+  public async getStatus(): Promise<DeviceStatus> {
     return this.send(Command.getStatus()).then((response) => ({
       active: response.data[0].value!,
       boost: response.data[0].value! && response.data[1].value!,
     }));
   }
 
-  public async getFanSpeeds(): Promise<{ silent: number, max: number }> {
+  public async getFanSpeeds(): Promise<FanSpeedStatus> {
     return this.send(Command.getFanSpeeds()).then((response) => ({
       silent: response.data[0].value!,
       max: response.data[1].value!,
